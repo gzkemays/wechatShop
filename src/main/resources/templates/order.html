@@ -1,0 +1,235 @@
+<!DOCTYPE>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <!--1、字符编码utf-8-->
+    <meta charset="UTF-8">
+    <!--2、标准的视口设置-->
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!--3、指明当前的页面在IE浏览器渲染时使用最新的渲染引擎-->
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!--5、编写 style -->
+    <link rel="stylesheet" href="css/semantic.css" th:href="@{/css/semantic.css}">
+    <link rel="stylesheet" href="css/animate.css" th:href="@{/css/animate.css}">
+    <style></style>
+    <title>Document</title>
+</head>
+<body>
+<!-- 头部 -->
+<div class="ui segment inverted secondary attached">
+    购物商场后台系统
+</div>
+
+    <!-- 中间内容 -->
+    <div class="ui grid segment">
+        <!-- 左侧列表 -->
+        <div class="four wide column">
+            <div class="ui vertical fluid tabular menu">
+                <a href="play.html" th:href="@{/play}" class="item">
+                    <div>
+                        <i class="icon image"></i>
+                        <font>轮播图</font>
+                    </div>
+                </a>
+                <a href="type.html" th:href="@{/type/0/0}" class="item">
+                    <div>
+                        <i class="icon idea"></i>
+                        <font class="right aligned">商品分类</font>
+                    </div>
+                </a>
+                <a href="product.html" th:href="@{/product}" class="item">
+                    <div>
+                        <i class="icon shop"></i>
+                        <font class="right aligned">商品添加</font>
+                    </div>
+                </a>
+                <a href="order.html" th:href="@{/order}" class="item active">
+                    <div>
+                        <i class="icon food"></i>
+                        <font class="right aligned">订单信息</font>
+                        <div class="ui circular label order" th:text="${orderCount}">100</div>
+                    </div>
+                </a>
+                <a href="message.html" th:href="@{/message}" class="item">
+                    <div>
+                        <i class="icon envelope"></i>
+                        <font class="right aligned">消息</font>
+                        <div class="ui circular label mess" th:text="${chatCount}">80</div>
+                    </div>
+
+                </a>
+
+            </div>
+        </div>
+        <!-- 右侧内容设置 -->
+        <div class="twelve wide stretched column">
+            <div class="ui segment">
+                <div class="ui form">
+                    <div class="fields inline">
+                        <div class="field">
+                            <input type="text" id="searchName" placeholder="输入用户名或订单号">
+                        </div>
+                        <div class="filed">
+                            <button class="ui mini teal basic button" id="searchBtn"><i class="ui search icon"></i>搜索</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="tableContainer">
+                <table th:fragment="searchList" class="ui table celled center aligned">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>用户名</th>
+                            <th>订单号</th>
+                            <th>详情</th>
+                            <th>发货</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="order:${allOrder.records}">
+                            <td th:text="${(orderStat.index + 1)} + ${allOrder.size}*${allOrder.current-1}">1</td>
+                            <td th:text="${order.user.username}">gzkemays</td>
+                            <td th:text="${order.orderNumber}">12345678</td>
+                            <td><div class="section"><a th:data-value="${order.id}" href="#" class="viewDetails">订单详情</a></div></td>
+                            <td>
+                                <a th:href="@{/sendOrder/{id}(id = ${order.id})}"class="ui button orange mini sendOrder" th:unless="${order.used}">派送</a>
+                                <a class="ui button teal mini m-order-send" disabled th:if="${order.used}">已派送</a>
+                                <div class="ui button red mini">删除</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                        <th colspan="6">
+                            <a th:unless="${allOrder.current} == ${allOrder.pages}" th:href="@{/order(current=${allOrder.current}+1)}" class="ui right floated primary mini button">
+                                下一页
+                            </a>
+                            <a th:unless="${allOrder.current} == 1" th:href="@{/order(current=${allOrder.current}-1)}" class="ui left floated primary mini button">
+                                上一页
+                            </a>
+                        </th>
+                        </tr>
+                    </tfoot>
+                </table>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- 模态框 -->
+<div class="ui modal">
+    <i class="close icon"></i>
+    <div class="header">
+        商品详情
+    </div>
+    <table class="ui selectable celled table" style="max-width: 95%; margin-left: 25px;">
+        <thead>
+        <tr>
+            <th>商品名称</th>
+            <th>数量</th>
+            <th>价格(总价)</th>
+            <th>单位</th>
+        </tr>
+        </thead>
+        <tbody id="tableTB">
+<!--        <tr>-->
+<!--            <td>华为Meta900</td>-->
+<!--            <td>5</td>-->
+<!--            <td>5000000</td>-->
+<!--        </tr>-->
+<!--        <tr class="warning">-->
+<!--            <td>RTX2080</td>-->
+<!--            <td>1</td>-->
+<!--            <td>6980</td>-->
+<!--        </tr>-->
+        </tbody>
+        <tfoot>
+        <tr>
+            <th>当前信息：<b style="color: red;" id="orderStatus">未发货</b></th>
+            <th id="orderAddress"></th>
+            <th id="orderTelPhone"></th>
+            <th id="consignee"></th>
+        </tr>
+        </tfoot>
+    </table>
+
+    <div class="actions">
+        <div class="ui teal basic" style="float: left;">
+            总价：<b style="color: red;" id="orderPrice">9999</b>
+        </div>
+        <div class="ui black deny button" id="closeBtn">
+            关闭
+        </div>
+    </div>
+</div>
+<!-- 导入 js 文件 -->
+<script src="js/vue.js" th:src="@{/js/vue.js}"></script>
+<script src="js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
+<script src="js/semantic.js" th:src="@{/js/semantic.js}"></script>
+<script src="js/me.js" th:src="@{/js/me.js}"></script>
+
+<script>
+    $("#searchBtn").click(function(){
+        let content = $("#searchName").val();
+        let val = $("#searchName").val();
+
+        if (parseInt(content).toString() == "NaN" && content.trim() != ""){
+            $("#tableContainer").load("/searchOrder",{
+                username : content.trim()
+            })
+        }else{
+            $("#tableContainer").load("/searchOrder",{
+                orderNumber : content.trim()
+            })
+        }
+
+    })
+    $(".ui.grid  .ui.very").eq(0).css({'position': 'relative','left': '-25px','top': '15px'})
+    $(document).ready(function(){
+        openSocket();
+    })
+    $(document).on('click',".viewDetails",function(){
+        $(".ui.modal").modal("show")
+        let oId = $(this).attr("data-value")
+        $.get("http://127.0.0.1:8080/po/"+oId,function(res){
+            for(let i = 0 ; i<res["product"].length;i++){
+                $("#tableTB").append(splitTr(i,res["product"][i]["productName"],res["product"][i]["pnum"],res["product"][i]["price"]))
+            }
+            for(let j = 0 ; j<$(".productPrice").length ; j++){
+                for(let k = 0 ;k<j ; k++){
+                    console.log(parseInt($('.productPrice').eq(k).text()))
+                    $("#orderPrice").text(parseInt($('.productPrice').eq(k).text())+parseInt($('.productPrice').eq(k+1).text()))
+                }
+            }
+            footData(res["order"]["address"],res["order"]["telPhone"],res["order"]["consignee"])
+            if(!res["order"]["used"]){
+                $("#orderStatus").text("未发货")
+            }else{
+                $("#orderStatus").text("已发货")
+            }
+        })
+    })
+
+    $(".ui.modal").modal({
+        onHidden:function(){$("#tableTB").empty()}
+    })
+    function splitTr(eqI,name,count,price){
+        let normalDiv = '<tr><td>'+name+'</td><td>'+count+'</td><td class="productPrice">'+parseInt(count)*parseInt(price)+'</td> <td>元</td></tr>'
+        let redDiv = '<tr class="warning"><td>'+name+'</td><td>'+count+'</td><td class="productPrice">'+parseInt(count)*parseInt(price)+'</td><td>元</td></tr>'
+        if(eqI%2 != 0){
+            return redDiv
+        }else{
+            return normalDiv
+        }
+    }
+    function footData(address,telPhone,consignee){
+        $("#orderAddress").text(address)
+        $("#orderTelPhone").text(telPhone)
+        $("#consignee").text(consignee)
+    }
+    $(document).on("click",".sendOrder",function(){
+        let id = $(this).attr("data-value")
+        $.get("/sendOrder/"+id)
+    })
+</script>
+</body>
+
+</html>

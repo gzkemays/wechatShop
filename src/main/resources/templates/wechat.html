@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!--1、字符编码utf-8-->
+    <meta charset="UTF-8">
+    <!--2、标准的视口设置-->
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!--3、指明当前的页面在IE浏览器渲染时使用最新的渲染引擎-->
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!--5、编写 style -->
+    <link rel="stylesheet" href="css/semantic.css" th:href="@{/css/semantic.css}">
+    <link rel="stylesheet" href="css/me.css" th:href="@{/css/me.css}">
+    <style></style>
+    <title>客服聊天系统</title>
+</head>
+<body>
+<div class="ui segment">
+    <div class="ui container segment">
+        <div class="ui segment header">客服系统</div>
+        <div class="ui grid segment">
+            <!-- 聊天内容信息框 -->
+            <div class="twelve wide column scrolling text">
+                <input type="hidden" name="userAvatarUrl" th:value="${userMessage.avatarUrl}">
+                <div class="ui segment" style="height: 100%;background: url(img/33.jpg) no-repeat ; background-size: cover;">
+                    <!-- 对话框 -->
+                    <div class="chatlist" style="height: 400px; overflow-y: auto;">
+                        <!-- 询问 -->
+                        <div th:each="chat:${allChat}">
+                            <div th:if="${chat.power} == 1" class="chatin">
+                                <img th:src="${userMessage.avatarUrl}" src="https://wx.qlogo.cn/mmopen/vi_32/NsdyFqbTp1n00vx8BkwPXL0SjHqEsGZnvI3w6cp8ynU79Ungibgib3a13hxOq0vQLWRw1kuOicX3lIB1goVBvkaEw/132">
+                                <span  th:text="${chat.chatHistory}">你好，请问什么时候发货你好，请问什么时候发货你好，请问什么时候发货你好，请问什么时候发货你好，请问什么时候发货你好，请问什么时候发货你好，请问什么时候发货你好，请问什么时候发货你好，请问什么时候发货你好，请问什么时候发货你好，请问什么时候发货你好，请问什么时候发货你好，请问什么时候发货你好，请问什么时候发货你好，请问什么时候发货你好，请问什么时候发货你好，请问什么时候发货你好，请问什么时候发货你好，请问什么时候发货</span>
+                            </div>
+                            <!-- 客服 -->
+                            <div  th:if="${chat.power} == 0" class="chatout">
+                                <img  src="https://wx.qlogo.cn/mmopen/vi_32/DF9G6cnzPicodvsibVkEYtic85w09ltF4b0gghDSYQXkGQKk3BkdAAceufutGge3ibpnoXjOVbtggBiatXLlg4st4rA/132">
+                                <span th:text="${chat.chatHistory}">你觉得我会发货么？</span>
+                            </div>
+                        </div>
+<!--                        <div class="chatin">-->
+<!--                            <img src="https://wx.qlogo.cn/mmopen/vi_32/NsdyFqbTp1n00vx8BkwPXL0SjHqEsGZnvI3w6cp8ynU79Ungibgib3a13hxOq0vQLWRw1kuOicX3lIB1goVBvkaEw/132">-->
+<!--                            <span>wdnm你等着倒闭吧狗贼！</span>-->
+<!--                        </div>-->
+                    </div>
+                    <div class="ui form">
+                        <textarea name="chatHistory" id="content"  rows="10" style="width: 100%; border-radius: 10px; background-color: #FFF8DC;"></textarea>
+                        <button id="wechatBtn" class="ui red button submit right floated m-margined-tb-mini">发送</button>
+                    </div>
+                </div>
+
+            </div>
+            <!-- 右侧用户信息框-->
+            <div class="four wide column">
+                <div class="ui segment" style="height: 100%;">
+                    <div class="ui segment top attac1hed header tiny">当前联系的用户</div>
+                    <div class="ui blue segment bottom attached stackable">
+                        <div class="ui label">
+                            <img  th:src="@{${userMessage.avatarUrl}}" src="https://wx.qlogo.cn/mmopen/vi_32/NsdyFqbTp1n00vx8BkwPXL0SjHqEsGZnvI3w6cp8ynU79Ungibgib3a13hxOq0vQLWRw1kuOicX3lIB1goVBvkaEw/132" alt="头像" class="ui right spaced avatar image"> <span th:text="${userMessage.username}">藤</span> — <span th:text="${userMessage.gender} == 1 ?'男':'女'">男</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+    <script src="../static/js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
+    <script src="../static/js/semantic.js" th:src="@{/js/semantic.js}"></script>
+    <script src="../static/lib/jqScroll/jquery.scrollTo.js" th:src="@{/lib/jqScroll/jquery.scrollTo.js}"> </script>
+    <script th:inline="javascript">
+        var socket;
+        function openSocket() {
+            if(typeof(WebSocket) == "undefined") {
+                console.log("您的浏览器不支持WebSocket");
+            }else{
+                console.log("您的浏览器支持WebSocket");
+                //实现化WebSocket对象，指定要连接的服务器地址与端口  建立连接
+                //等同于socket = new WebSocket("ws://localhost:8888/xxxx/im/25");
+                //var socketUrl="${request.contextPath}/im/"+$("#userId").val();
+                var socketUrl="http://localhost:8080/websocket/1";
+                socketUrl=socketUrl.replace("https","ws").replace("http","ws");
+                console.log(socketUrl);
+                if(socket!=null){
+                    socket.close();
+                    socket=null;
+                }
+                socket = new WebSocket(socketUrl);
+                //打开事件
+                socket.onopen = function() {
+                    console.log("websocket已打开");
+                    // socket.send("这是来自客户端的消息" + location.href + new Date());
+                };
+                //获得消息事件
+                socket.onmessage = function(msg) {
+                    let map = $.parseJSON(msg.data)
+                    for (let key in map){
+                        var judge = map["toUserId"]
+                        var content = map["contentText"]
+                    }
+                if(judge == "1"){
+                    var userAvatarUrl = $("[name='userAvatarUrl']").val()
+                    console.log(userAvatarUrl)
+                    let split = '<div class="chatin">' +
+                        '<img src= " '+userAvatarUrl+' " >' +
+                        '<span>'+content+'</span>' +
+                        '</div>'
+                    $(".chatlist").append(split)
+                }
+                    scollBottom()
+
+
+
+                    //发现消息进入    开始处理前端触发逻辑
+                };
+                //关闭事件
+                socket.onclose = function() {
+                    console.log("websocket已关闭");
+                };
+                //发生了错误事件
+                socket.onerror = function() {
+                    console.log("websocket发生了错误");
+                }
+            }
+        }
+        function sendMessage(chatMessage) {
+            if(typeof(WebSocket) == "undefined") {
+                console.log("您的浏览器不支持WebSocket");
+            }else {
+                console.log("您的浏览器支持WebSocket");
+                let url = window.location.pathname
+                let preIndex = url.lastIndexOf("/");
+                let userId = url.substring(preIndex+1);
+                console.log('{"toUserId":"'+userId+'","contentText":"'+chatMessage+'"}');
+                socket.send('{"toUserId":"'+userId+'","contentText":"'+chatMessage+'"}');
+            }
+        }
+        $(document).ready(function(){
+            $(".chatlist").scrollTo(9999,500)
+            openSocket();
+        })
+
+
+        //判断是否在前面加0
+        function getNow(s) {
+            return s < 10 ? '0' + s: s;
+        }
+
+        function timeSend(timeDOM_OLD){
+            let preIndex = $(timeDOM_OLD).text().lastIndexOf(":")
+            let old_hours = parseInt($(timeDOM_OLD).text().substring(0,preIndex))
+            let old_min = parseInt($(timeDOM_OLD).text().substring(preIndex+1))
+            var myDate = new Date();
+            var h = myDate.getHours();              //获取当前小时数(0-23)
+            var m = myDate.getMinutes();          //获取当前分钟数(0-59)
+            var now = getNow(h)+':'+getNow(m)
+
+            if(getNow(h) - old_hours >= 1 || Math.abs(getNow(m) - old_min) >= 15){
+                let timeSplit = '<p class="time"><span>'+now+'</span></p>'
+                $(".chatlist").append(timeSplit)
+            }
+        }
+
+        $("#wechatBtn").click(function(){
+            let textValue = $("[name='chatHistory']").val()
+            console.log(textValue)
+
+            let timeLen = $(".chatlist").children(".time").length
+            // 拼接字符串
+            let splitDiv = "<div class='chatout'><img src = 'https://wx.qlogo.cn/mmopen/vi_32/DF9G6cnzPicodvsibVkEYtic85w09ltF4b0gghDSYQXkGQKk3BkdAAceufutGge3ibpnoXjOVbtggBiatXLlg4st4rA/132'><span>"+textValue+"</span></div>"
+
+            let oldTime = $(".time:last")
+
+            timeSend(oldTime)
+            $(".chatlist").append(splitDiv)
+            $("#content").val("")
+
+            sendMessage(textValue);
+            scollBottom()
+        })
+
+        function scollBottom(){
+            let height = $(".chatlist").height()
+            // 子元素长度
+            let len = $(".chatlist").children().length
+            $(".chatlist").scrollTo(height*len,500);
+        }
+
+    </script>
+</body>
+</html>

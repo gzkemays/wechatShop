@@ -1,0 +1,378 @@
+
+/*----- 自定义 padding -----*/
+.m-padded-mini{
+    padding: 0.2em !important;
+}
+.m-padded-tiny{
+    padding: 0.4 !important;
+}
+.m-padded-tb-mini{
+    padding-bottom: 0.2em !important;
+    padding-top: 0.2em !important;
+}
+.m-padded-tb-tiny{
+    padding-bottom: 0.3em !important;
+    padding-top: 0.3em !important;
+}
+.m-padded-small{
+    padding-bottom: 0.5em !important;
+    padding-top: 0.5em !important;
+}
+.m-padded-tb{
+    padding-bottom: 1em !important;
+    padding-top: 1em !important;
+}
+.m-padded-tb-large{
+    padding-bottom: 2em !important;
+    padding-top: 2em !important;
+}
+.m-padded-tb-middle{
+    padding-bottom: 3em !important;
+    padding-top: 3em !important;
+}
+.m-padded-tb-huge{
+    padding-bottom: 4em !important;
+    padding-top: 4em !important;
+}
+.m-padded-tb-massive{
+    padding-bottom: 5em !important;
+    padding-top: 5em !important;
+}
+.m-padded-lr{
+    padding-right: 1em !important;
+    padding-left: 1em !important;
+}
+.m-padded-lr-mini{
+    padding-right: 2em !important;
+    padding-left: 2em !important;
+}
+.m-padded-tiny{
+    padding-right: 3em !important;
+    padding-left: 3em !important;
+}
+.m-padded-lr-middle{
+    padding-right: 4em !important;
+    padding-left: 4em !important;
+}
+.m-padded-lr-huge{
+    padding-right: 5em !important;
+    padding-left: 5em !important;
+}
+.m-padded-lr-massive{
+    padding-right: 6em !important;
+    padding-left: 6em !important;
+}
+.m-padded-lr-responsive{
+    padding-right: 3em !important;
+    padding-left: 3em !important;
+}
+
+
+/*---- 自定义 margin ----*/
+.m-margined{
+    margin: 0.1em !important;
+}
+.m-margined-mini{
+    margin: 0.2em !important;
+}
+.m-margined-tiny{
+    margin: 0.4em !important;
+}
+.m-margined-tb-mini{
+    margin-bottom: 0.2em !important;
+    margin-top: 0.2em !important;
+}
+.m-margined-tb-tiny{
+    margin-bottom: 0.3em !important;
+    margin-top: 0.3em !important;
+}
+.m-margined-small{
+    margin-bottom: 0.5em !important;
+    margin-top: 0.5em !important;
+}
+.m-margined-tb{
+    margin-bottom: 1em !important;
+    margin-top: 1em !important;
+}
+.m-margined-tb-middle{
+    margin-bottom: 2em !important;
+    margin-top: 2em !important;
+}
+.m-margined-tb-large{
+    margin-bottom: 3em !important;
+    margin-top: 3em !important;
+}
+.m-margined-tb-huge{
+    margin-bottom: 4em !important;
+    margin-top: 4em !important;
+}
+.m-margined-tb-massive{
+    margin-bottom: 5em !important;
+    margin-top: 5em !important;
+}
+.m-margined-bottom{
+    margin-bottom: 0.3em !important;
+}
+.m-margined-lr{
+    margin-left: 1em !important;
+    margin-right: 1em !important;
+}
+.m-margined-lr-middle{
+    margin-left: 2em !important;
+    margin-right: 2em !important;
+}
+.m-margined-lr-huge{
+    margin-left: 3em !important;
+    margin-right: 3em !important; 
+}
+/*----- 自定义 text -----*/
+.m-text{
+    font-weight: 300 !important;  text-indent: 2em;  letter-spacing: 1px !important; line-height: 1.8;
+}
+/* 字粗体 */
+.m-text-thin{
+    font-weight: 300 !important;
+}
+/* 字间距 */
+.m-text-spaced{
+    letter-spacing: 1px !important;
+}
+/* 行间距 */
+.m-text-lined{
+    line-height: 1.8;
+}
+/* 缩进 */
+.m-text-indented{
+    text-indent: 2em;
+}
+
+
+/*----- 自定义 透明度 -----*/
+.m-opacity-mini{
+    opacity: 0.8;
+}
+.m-opacity-tiny{
+    opacity: 0.6;
+}
+.m-opacity-middle{
+    opacity: 0.4;
+}
+.m-opacity-large{
+    opacity: 0.2;
+}
+
+
+/*----- 自定义 display -----*/
+.m-inline-block{
+    display: inline-block;
+}
+
+
+/*----- 自定义布局 -----*/
+.m-container{
+    max-width: 72em !important;
+    margin: auto !important;
+}
+.m-container-small{
+    max-width: 60em !important;
+    margin: auto !important;
+}
+.m-container-huge{
+    max-width: 84em !important;
+    margin: auto !important;
+}
+.m-container-massive{
+    max-width: 90% !important;
+    margin: auto !important;
+}
+.m-container-massive-plus{
+    max-width: 100% !important;
+    margin: auto !important;
+}
+.m-container-width-massive{
+    width: 100% !important;
+}
+
+
+
+/*----- 自定义 color -----*/
+.m-black{
+    columns: #333333;
+}
+
+
+/*----- 自定义 position -----*/
+.m-right-top{
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+.m-fixed{
+    position: fixed !important;
+    z-index: 1 !important;
+}
+.m-right-bottom{
+    bottom:0 !important;
+    right:0 !important;
+}
+
+
+/*----- 自定义菜单按钮默认为 none -----*/
+.m-mobile-show{
+    display: none !important;
+}
+
+
+/*----- 自定义阴影 -----*/
+.m-shadow{
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.2) !important;
+}
+.m-shadow-black{
+    box-shadow: 5px 8px 8px rgba(0, 0, 0, 0.8) !important;
+}
+
+
+/*----- 自定义手机端媒体 media -----*/
+@media screen and (max-width:768px){
+    .m-mobile-hide{
+        display: none !important;
+    }
+    .m-mobile-show{
+        display: block !important;
+    }
+    .m-padded-lr-responsive{
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+    .m-mobile-wide{
+        width: 100%;
+    }
+}
+
+
+/*----- 自定义动画效果 -----*/
+.m-down-up{
+    transform: rotate(180deg) !important;
+    transition: transform 0.35s linear !important;
+}
+.m-up-down{
+    transform: rotate(360deg) !important;
+    transition: transform 0.35s linear !important;
+}
+
+
+/*----- 自定义标签样式 -----*/
+textarea{
+    resize:none !important; 
+}
+
+/*----- 自定义背景板 -----*/
+.m-index-bg{
+    background: url(../images/27.jpg) no-repeat fixed !important;
+    background-size: cover !important;
+
+}
+.m-index-contentParent-bg{
+    background: url(../images/16.jpg) no-repeat fixed !important;
+    background-size: cover !important; 
+}
+.m-index-content-bg{
+    background-color: rgb(255, 255, 255,0.5) !important;
+}
+.m-index-content-bgSky{
+    background-color: rgba(222, 247, 245, 0.5) !important;
+}
+.m-index-contentR-bgBlack{
+    background-color: rgba(0, 0, 0, 0.5) !important;
+}
+.m-index-contentR-bg{
+    background-color: rgba(234, 245, 76, 0.5) !important;
+}
+
+/*----- 自定义鼠标事件 -----*/
+.m-recommend-link:hover{
+    font-weight: 600 !important;
+    color:teal !important;
+}
+.m-order-send:hover{
+    cursor:not-allowed;
+}
+
+/*----- 对话框 -----*/
+.chatlist{
+    margin-top:44px;padding:12px;
+}
+.chatlist p.time{
+    margin:0;text-align: center;
+}
+.chatlist p.time span{
+    padding:0 18px;
+    display:inline-block;
+    font-size:9pt;
+    color: black;
+    border-radius: 2px;
+    background-color: #cccccc;
+    opacity: 0.7;
+}
+.chatlist .chatout,.chatlist .chatin{
+    margin:10px 0;
+}
+.chatlist .chatout{
+    text-align:right;
+}
+.chatlist .chatout img{
+    float:right;
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    margin: 0 0 0 10px;
+}
+.chatlist .chatout span{
+    display: inline-block;
+    position:relative;
+    padding:10px;
+    max-width: calc(100% - 90px);
+    min-height: 40px;
+    line-height:20px;
+    font-size: 13px;
+    word-break: break-all;
+    border-radius: 4px;
+    background-color: teal;
+    color:#fff;
+}
+.chatlist .chatout span:before{
+    content: " ";
+    position: absolute;
+    top: 9px;
+    left: 100%;
+    border: 6px solid transparent;
+    border-left-color: teal;
+}
+.chatlist .chatin img{
+    float:left;
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    margin: 0 10px 0 0;
+}
+.chatlist .chatin span{
+    display: inline-block;
+    position:relative;
+    padding:10px;
+    max-width: calc(100% - 90px);
+    min-height: 40px;
+    line-height:20px;
+    font-size: 13px;
+    word-break: break-all;
+    border-radius: 4px;
+    text-align: left;
+    background-color: green;color:#fff;
+}
+.chatlist .chatin span:before{
+    content: " ";
+    position: absolute;
+    top: 9px;
+    right: 100%;
+    border: 6px solid transparent;
+    border-right-color: green;
+}

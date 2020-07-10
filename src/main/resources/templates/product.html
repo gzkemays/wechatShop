@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <!--1、字符编码utf-8-->
+    <meta charset="UTF-8">
+    <!--2、标准的视口设置--> 
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!--3、指明当前的页面在IE浏览器渲染时使用最新的渲染引擎-->
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!--4、导入 js 文件 -->
+    <script src="js/vue.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/semantic.js"></script>
+    <!--5、编写 style -->
+    <link rel="stylesheet" href="css/semantic.css" th:href="@{/css/semantic.css}">
+    <link rel="stylesheet" href="css/animate.css" th:href="@{/css/animate.css}">
+    <style></style>
+    <title>商品浏览</title>
+</head>
+<body>
+<!-- 头部 -->
+<div class="ui segment inverted secondary attached">
+    购物商场后台系统
+</div>
+
+    <!-- 中间内容 -->
+    <div class="ui grid segment">
+        <!-- 左侧列表 -->
+        <div class="four wide column">
+            <div class="ui vertical fluid tabular menu">
+                <a href="play.html" th:href="@{/play}" class="item">
+                    <div>
+                        <i class="icon image"></i>
+                        <font class="right aligned">轮播图</font>
+                    </div>
+                </a>
+                <a href="type.html" th:href="@{/type/0/0}"  class="item">
+                    <div>
+                        <i class="icon idea"></i>
+                        <font class="right aligned">商品分类</font>
+                    </div>
+                </a>
+                <a href="product.html" th:href="@{/product}" class="item active">
+                    <div>
+                        <i class="icon shop"></i>
+                        <font class="right aligned">商品添加</font>
+                    </div>
+                </a>
+                <a href="order.html" th:href="@{/order}" class="item">
+                    <div>
+                        <i class="icon food"></i>
+                        <font class="right aligned">订单信息</font>
+                        <div class="ui circular label order" th:text="${orderCount}">100</div>
+                    </div>
+                </a>
+                <a href="message.html" th:href="@{/message}" class="item">
+                    <div>
+                        <i class="icon envelope"></i>
+                        <font class="right aligned">消息</font>
+                        <div class="ui circular label mess" th:text="${chatCount}">80</div>
+                    </div>
+
+                </a>
+
+            </div>
+        </div>
+        <!-- 右侧内容设置 -->
+        <div class="twelve wide stretched column">
+          <div class="ui segment">
+            <div class="ui form">
+                <div class="fields inline">
+                    <div class="field">
+                        <input type="text" name="" id="" placeholder="输入商品名字">
+                    </div>
+                    <div class="field">
+                        <button class="ui mini teal button basic"><i class="ui icon search"></i>搜索</button>
+                    </div>
+                </div>
+            </div>
+            <!-- 表格 -->
+            <table class="ui celled table stackable center aligned ">
+                <!-- 第一行标题 -->
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Order</th>
+                        <th>Details</th>
+                        <th>Operate</th>
+                    </tr>
+                </thead>
+                <!-- 内容 -->
+                <tbody>
+                    <tr th:each="productRecords:${product.records}">
+                        <td th:text="${productRecordsStat.index + 1} + 5*(${product.current} - 1)">1</td>
+                        <td th:text="${productRecords.productName}">iPhone 99</td>
+                        <td>
+                            <div class="section">
+                                <a href="#" th:data-id="${productRecords.id}" class="item viewDetails">查看详情</a>
+                            </div>
+                        </td>
+                        <td>
+                            <a href="#" class="ui mini teal button">编辑</a>
+                            <a href="#" class="ui mini red button">删除</a>
+                        </td>             
+                    </tr>
+<!--                    <tr>-->
+<!--                        <td>2</td>-->
+<!--                        <td>HuaWeiP99</td>-->
+<!--                        <td><a href="#">查看详情</a></td>-->
+<!--                        <td>-->
+<!--                            <a href="#" class="ui mini teal button">编辑</a>-->
+<!--                            <a href="#" class="ui mini red button">删除</a>-->
+<!--                        </td>             -->
+<!--                    </tr>-->
+                </tbody>
+                <tfoot class="full-width">
+                    <tr>
+                    <th colspan="6">
+                        <a th:unless="${product.current} == ${product.pages}" th:href="@{/product/(current = ${product.current + 1})}" class="ui right floated primary button mini">
+                            下一页
+                        </a>
+                        <div class="ui green button mini" id="addBtn">
+                            <i class="add icon"></i>新增
+                        </div>
+                        <a th:unless="${product.current} == 1" th:href="@{/product/(current = ${product.current - 1})}" class="ui left floated primary button mini">
+                            上一页
+                        </a>
+                    </th>
+                    </tr>
+                </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+<!-- 模态框 -->
+    <div class="ui modal">
+        <i class="close icon"></i>
+        <div class="header">
+            商品详情
+        </div>
+        <div class="image content">
+            <div class="ui medium image">
+                <img class="picture" src="http://127.0.0.1:8080/productPic/3c6098e8-a5bc-4edb-aae5-c781a3c5e38e_%E5%8D%8E%E4%B8%BAMeta999.jpg">
+            </div>
+            <div class="ui divided list" style="width: 100% !important;">
+                <div class="item">
+                    <div class="ui black horizontal label">名称</div>
+                    <b class="productName">华为</b>
+                </div>
+                <div class="item">
+                    <div class="ui orange horizontal label">价钱</div>
+                    <b class="price">9999.00</b>
+                </div>
+                <div class="item">
+                    <div class="ui teal horizontal label">库存</div>
+                    <b class="repertory">20</b>
+                </div>
+                <div class="item">
+                    <div class="ui red horizontal label">分类</div>
+                    <b class="type">手机</b>
+                </div>
+                <div class="ui item left labeled scrolling content">
+                    <div class="ui white horizontal label" style="height: 100% !important;">
+                        描述
+                    </div>
+                    <b class="m-text details">超时代的现代化变态手机超时代的现代化变态手机超时代的现代化变态手机超时代的现代化变态手机超时代的现代化变态手机超时代的现代化变态手机超时代的现代化变态手机超时代的现代化变态手机超时代的现代化变态手机</b>
+                </div>
+            </div>
+        </div>
+        <div class="actions">
+            <div class="ui black deny button">
+                关闭
+            </div>
+        </div>
+    </div>
+
+
+<div id="changeDetails">
+    <div th:fragment="detailsModal">
+        <div th:if="${details} != null">
+            <input type="hidden" id="dd" th:value="${details.details}">
+            <input type="hidden" id="ds" th:value="${details.picture}">
+            <input type="hidden" id="dn" th:value="${details.productName}">
+            <input type="hidden" id="dr" th:value="${details.repertory}">
+            <input type="hidden" id="dp" th:value="${details.price}">
+        </div>
+    </div>
+</div>
+<!-- 导入 js 文件 -->
+<script src="js/vue.js" th:src="@{/js/vue.js}"></script>
+<script src="js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
+<script src="js/semantic.js" th:src="@{/js/semantic.js}"></script>
+<script src="js/me.js" th:src="@{/js/me.js}"></script>
+
+<script>
+    $(document).ready(function(){
+        openSocket();
+    })
+    $("#addBtn").click(function(){
+        window.open("/addProduct")
+    })
+    $(".viewDetails").click(function(){
+        let id = $(this).attr("data-id")
+        console.log(id)
+        $(".ui.modal").modal("show")
+        $("#changeDetails").load("/details/"+id+"",function(){
+            $(".ui.modal .picture").attr("src",$("#ds").val())
+            $(".ui.modal .productName").text($("#dn").val())
+            $(".ui.modal .price").text($("#dp").val())
+            $(".ui.modal .repertory").text($("#dr").val())
+            $(".ui.modal .details").text($("#dd").val())
+        });
+    })
+
+</script>
+</body>
+
+</html>

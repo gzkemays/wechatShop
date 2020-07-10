@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <!--1、字符编码utf-8-->
+    <meta charset="UTF-8">
+    <!--2、标准的视口设置-->
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!--3、指明当前的页面在IE浏览器渲染时使用最新的渲染引擎-->
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!--5、编写 style -->
+    <link rel="stylesheet" href="css/semantic.css" th:href="@{/css/semantic.css}">
+    <link rel="stylesheet" href="css/animate.css" th:href="@{/css/animate.css}">
+    <style></style>
+    <title>轮播图设置</title>
+</head>
+<body>
+<!-- 头部 -->
+<div class="ui segment inverted secondary attached center aligned">
+    购物商场后台系统
+</div>
+
+    <!-- 中间内容 -->
+    <div class="ui grid segment">
+        <!-- 左侧列表 -->
+        <div class="four wide column">
+          <div class="ui vertical fluid tabular menu">
+            <a href="play.html" th:href="@{/play}" class="item active">
+                <div>
+                    <i class="icon image"></i>
+                    <font>轮播图</font>
+                </div>
+            </a>
+            <a href="type.html" th:href="@{/type/0/0}" class="item">
+                <div>
+                    <i class="icon idea"></i>
+                    <font class="right aligned">商品分类</font>
+                </div>
+            </a>
+            <a href="product.html" th:href="@{/add}" class="item">
+                <div>
+                    <i class="icon shop"></i>
+                    <font class="right aligned">商品添加</font>
+                </div>
+            </a>
+            <a href="order.html" th:href="@{/order}" class="item">
+                <div>
+                    <i class="icon food"></i>
+                    <font class="right aligned">订单信息</font>
+                    <div class="ui circular label order" th:text="${orderCount}">100</div>
+                </div>
+            </a>
+            <a href="message.html" th:href="@{/message}" class="item">
+                <div>
+                    <i class="icon envelope"></i>
+                    <font class="right aligned">消息</font>
+                    <div class="ui circular label mess" th:text="${chatCount}">80</div>
+                </div>
+                
+            </a>
+
+          </div>
+        </div>
+        <!-- 右侧内容设置 -->
+        <div class="twelve wide stretched column">
+            <form action="/play" method="POST" enctype="multipart/form-data">
+                <div class="ui teal basic button" id="addBtn" onclick="add()">添加</div>
+                <div class="ui red basic button disabled" id="delBtn" onclick="remove()">删除</div>
+                <div class="ui segment top attached" id="fileArray">
+                </div>
+                <div class="ui segment attached center aligned">
+                    <input class="ui button basic teal disabled" type="submit" value="一键上传">
+                </div> 
+            </form>
+        </div>
+    </div>
+
+<!-- 导入 js 文件 -->
+<script src="js/vue.js" th:src="@{/js/vue.js}"></script>
+<script src="js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
+<script src="js/semantic.js" th:src="@{/js/semantic.js}"></script>
+<script src="js/me.js" th:src="@{/js/me.js}"></script>
+
+<script>
+
+
+function add(){
+    var fileLen = $("#fileArray").children(".input").length
+    var innerDiv = ""
+    var chineseNum = ["一","二","三"]
+    if(fileLen<=2){
+        innerDiv += '<div class="ui left labeled teal basic input"><label class="ui basic teal label">图'+chineseNum[fileLen]+'</label><input type="file" name="files" id="'+fileLen+'" required="required"></div>'
+        $("#fileArray").append(innerDiv);
+    }else{
+        $("#addBtn").addClass("disabled");
+    }
+    if(fileLen>=0){
+        $("#delBtn").removeClass("disabled");
+        $("[type='submit']").removeClass("disabled");
+    }
+}
+function remove(){
+    var fileLen = $("#fileArray").children(".input").length
+    if(fileLen>0){
+        $("#fileArray").children(".input").eq(fileLen-1).remove()
+        $("#addBtn").removeClass("disabled");
+    }
+    if(fileLen<=1){
+        $("#delBtn").addClass("disabled");
+        $("[type='submit']").addClass("disabled");
+    }
+}
+$(document).ready(function(){
+    openSocket();
+})
+</script>
+</body>
+
+</html>

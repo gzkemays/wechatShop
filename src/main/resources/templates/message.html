@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <!--1、字符编码utf-8-->
+    <meta charset="UTF-8">
+    <!--2、标准的视口设置-->
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!--3、指明当前的页面在IE浏览器渲染时使用最新的渲染引擎-->
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!--5、编写 style -->
+    <link rel="stylesheet" href="css/semantic.css" th:href="@{/css/semantic.css}">
+    <link rel="stylesheet" href="css/animate.css" th:href="@{/css/animate.css}">
+    <style></style>
+    <title>消息</title>
+</head>
+<body>
+<!-- 头部 -->
+<div class="ui segment inverted secondary attached">
+    购物商场后台系统
+</div>
+
+    <!-- 中间内容 -->
+    <div class="ui grid segment">
+        <!-- 左侧列表 -->
+        <div class="four wide column">
+            <div class="ui vertical fluid tabular menu">
+                <a href="play.html" th:href="@{/play}" class="item">
+                    <div>
+                        <i class="icon image"></i>
+                        <font class="right aligned">轮播图</font>
+                    </div>
+                </a>
+                <a href="type.html" th:href="@{/type/0/0}"  class="item">
+                    <div>
+                        <i class="icon idea"></i>
+                        <font class="right aligned">商品分类</font>
+                    </div>
+                </a>
+                <a href="product.html" th:href="@{/product}" class="item">
+                    <div>
+                        <i class="icon shop"></i>
+                        <font class="right aligned">商品添加</font>
+                    </div>
+                </a>
+                <a href="order.html" th:href="@{/order}" class="item">
+                    <div>
+                        <i class="icon food"></i>
+                        <font class="right aligned">订单信息</font>
+                        <div class="ui circular label order" th:text="${orderCount}">100</div>
+                    </div>
+                </a>
+                <a href="message.html" th:href="@{/message}" class="active item">
+                    <div>
+                        <i class="icon envelope"></i>
+                        <font class="right aligned">消息</font>
+                        <div class="ui circular label mess" th:text="${chatCount}">80</div>
+                    </div>
+
+                </a>
+
+            </div>
+        </div>
+        <!-- 右侧内容设置 -->
+        <div class="twelve wide stretched column">
+          <div class="ui segment">
+            <table class="ui table celled center aligned">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>用户名</th>
+                        <th>信息数目</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="user:${userList.records}" th:unless="${user.id == 1}">
+                        <td th:text="(${userStat.index})+5*(${userList.current}-1)">1</td>
+                        <td class="ui link list"><a href="#" th:href="@{/wechat/{id}(id = ${user.id})}" target="_blank" onclick="closeSocket()" th:text="${user.username}" class="item">gzkemays</a></td>
+                        <td>
+                            <div class="ui circular label comm" th:id="|msg${user.id}|" th:text="${user.messNum}">30</div>
+                        </td>
+                    </tr>
+<!--                    <tr>-->
+<!--                        <td>2</td>-->
+<!--                        <td class="ui link list"><a href="#" class="item">gzkemays</a></td>-->
+<!--                        <td>-->
+<!--                            <div class="ui circular label comm">100</div>-->
+<!--                        </td>-->
+<!--                    </tr>-->
+<!--                    <tr>-->
+<!--                        <td>3</td>-->
+<!--                        <td class="ui link list"><a href="#" class="item">gzkemays</a></td>-->
+<!--                        <td>-->
+<!--                            <div class="ui circular label comm">20</div>-->
+<!--                        </td>-->
+<!--                    </tr>-->
+                </tbody>
+                <tfoot>
+                    <tr>
+                    <th colspan="6">
+                        <a th:unless="${userList.current == 1}" th:href="@{/message(current=${userList.current} + 1)}" class="ui right floated primary mini button">
+                            下一页
+                        </a>
+                        <a th:unless="${userList.current == userList.pages}" th:href="@{/message(current=${userList.current} - 1)}" class="ui left floated primary mini button">
+                            上一页
+                        </a>
+                    </th>
+                    </tr>
+                </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+
+<!-- 导入 js 文件 -->
+<script src="js/vue.js" th:src="@{/js/vue.js}"></script>
+<script src="js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
+<script src="js/semantic.js" th:src="@{/js/semantic.js}"></script>
+<script src="js/me.js" th:src="@{/js/me.js}"></script>
+
+<script>
+    var socket;
+    function openSocket() {
+        if(typeof(WebSocket) == "undefined") {
+            console.log("您的浏览器不支持WebSocket");
+        }else {
+            console.log("您的浏览器支持WebSocket");
+            var socketUrl = "http://localhost:8080/websocket/1";
+            socketUrl = socketUrl.replace("https","ws").replace("http","ws");
+            console.log(socketUrl);
+            // 统计获取的消息条目
+            if(socket != null){
+                socket.close();
+                socket = null;
+            }else{
+                socket = new WebSocket(socketUrl);
+                socket.onmessage = function(msg){
+                    console.log(msg.data);
+                    if( (msg.data).lastIndexOf("ok") == -1 ){
+                        let map = $.parseJSON(msg.data)
+                        let msgId = "#msg"+map["fromUserId"]
+                        let oldCount = $(msgId).text()
+                        $(msgId).text(parseInt(oldCount)+1)
+                        judgeCircular(commNum,$(".circular.label.comm"));
+
+                        let oldCount2 = $($(".circular.label.mess")).text()
+                        $($(".circular.label.mess")).text(parseInt(oldCount2)+1)
+                        judgeCircular(commNum,$(".circular.label.mess"));
+                    }
+
+                }
+                socket.onclose = function(msg){
+                    console.log(msg)
+                }
+            }
+        }
+
+    }
+    function closeSocket(){
+        socket.close();
+    }
+    $(document).ready(function(){
+        openSocket();
+
+    })
+</script>
+
+</body>
+
+</html>
